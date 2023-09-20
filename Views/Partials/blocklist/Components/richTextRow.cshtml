@@ -1,0 +1,19 @@
+@inherits UmbracoViewPage<BlockListItem>
+    
+@{
+    var row = (RichTextRow)Model.Content; 
+
+        <!-- to render hide richtextrow settings model -->
+    var settings = (RichTextRowSettings)Model.Settings;
+    if(settings?.Hide ?? false) { return; }
+}
+
+<!-- Main -->
+<br>
+<div class="row gx-4 gx-lg-10 justify-content-center">
+<section id="main" class="wrapper">
+    <div class="container">
+        @row.Content
+    </div>
+</section>      
+</div>

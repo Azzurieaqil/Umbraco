@@ -1,0 +1,72 @@
+﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.HomePage2>
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@{
+	Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+
+			<!--To render dropdown-->
+		<style>
+			body{
+				background-color:@Model.Colour;
+			}
+		</style>
+
+		<meta charset="utf-8">
+		<meta content="IE=edge,chrome=1' http-equiv='X-UA-Compatible">
+		<meta content="width=device-width, initial-scale=1.0" name="viewport">
+		<title></title>
+		<!--css here-->
+		<!--<link rel="stylesheet" type="text/css" href="/css/style.css">-->
+</head>
+<body>
+
+
+		<!-- To render properties -->
+		<h1>@Model.Name</h1>
+		<h2>@Model.Title</h2>
+
+		@{
+			var test = "Liyana";
+		}
+
+
+		<!--To render repeatable strings-->
+		@if(Model.Names != null && Model.Names.Any())
+		{
+			<ul>
+				@foreach(var name in Model.Names)
+				{
+					<li>@name</li>
+				}
+			</ul>
+		}
+
+		<!--To render true/false [code is to hide image depending on what we choose on content] -->
+		@if(Model.Image !=null && Model.HideIcon ==false)
+		{
+		<!--To render Image                   "Image" must follow name of compositions properties-->
+		<img style="width : 50%;" src="@Model.Image.Url()" alt="pb2">
+		}
+
+		<!--To render strings [make sure put depending on the alias name]-->
+		@Model.BodyText
+
+		<!--to display HIDDEN in content umbraco when hiding the pro -->
+		{{$settings.hide == '1'?'[HIDDEN]':"}}
+
+		<!--to display an item in blocklist -->
+		@{
+			var row = (FeaturedItemsRow)Model.Content; <!--the alias must be the same with the "elements" -->
+			var settings = (FeaturedItemsRowSettings)Model.Settings;<!--the alias settings must be the same with the settings model -->
+			if(settings?.Hide ?? false) { return; } <!--code for hide the component when tell to -->
+			if(row.FeaturedItems == null || !row.FeaturedItems.Any()) return; <!--if the item is 0 or no item inside, return / make sure same alias with the item inside the accordion -->
+		}
+</body>
+</html>
+
+

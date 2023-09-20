@@ -1,0 +1,40 @@
+@using Examine
+@using Umbraco.Cms.Web.Common
+@inject IExamineManager ExamineManager;
+@model (string searchTerm, UmbracoHelper Umbraco)
+
+<partial name="Search/_SearchBox" model="Model.searchTerm" />
+
+@if(ExamineManager.TryGetIndex("ExternalIndex",out var index)){
+    var results = index.Searcher.Search(Model.searchTerm);
+
+        <!--if have any value -->
+    if(results?.Any() ?? false)
+    {
+        <br><p>We found @results?.Count() results</p>
+        <div class="row">
+            <ul class="list-unstyled">
+                @foreach (var result in results)
+                {   <!--use the umbraco content to get Id of result and print it -->
+                    var content  = Model.Umbraco.Content(result.Id);
+                    <li>
+                        <a href="@content?.Url()">@content?.Name</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    }
+
+        <!--if no value -->
+    else{
+       <br> <div>
+            <div class="row">
+                <div class="col-12 mb-2">
+                    <div class="p-5 border border-dark bg-light">
+                        <h5>Your search returned 0 results.</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}

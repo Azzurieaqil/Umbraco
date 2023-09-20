@@ -1,0 +1,32 @@
+<!-- code to render image in blocklist -->
+
+@inherits UmbracoViewPage<BlockListItem>
+    
+@{
+    var row = (ImageRow)Model.Content;
+    if(row.Image == null) return;
+
+    <!-- to render hide richtextrow settings model -->
+    var settings = (ImageRowSettings)Model.Settings;
+    if(settings?.Hide ?? false) { return; }
+ }
+
+<div class ="row gx-4 gx-lg-5 justify-content-center">
+    <div class = "col-md-10 col-lg-8 col-xl-7">
+
+        <!-- code to render link when click image -->
+        @if(row.Links != null)
+        {
+            @:<a href="@row.Links.Url" target="@row.Links.Target" title="@row.Links.Name">     
+        }
+
+       <center> <img class ="img-fluid" src="@row.Image.Url()" alt="@row.Caption" width="50%"></center>
+        <span class="caption text-muted">@row.Caption</span>
+
+         <!-- code to render link when no link on image-->
+        @if(row.Links != null)
+        {
+            @:</a>
+        }
+    </div>
+</div>
